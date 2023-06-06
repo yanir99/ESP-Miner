@@ -9,4 +9,6 @@ idf_component_register(SRCS
 "oled.c"
 "system.c"
 "work_queue.c"
-INCLUDE_DIRS ".")
+INCLUDE_DIRS "."
+REQUIRES nvs_flash connect stratum esp_adc_cal bm1397
+)

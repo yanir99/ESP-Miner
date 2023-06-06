@@ -9,8 +9,8 @@
 #include "esp_log.h"
 #include "nvs_flash.h"
 #include "esp_netif.h"
-#include "protocol_examples_common.h"
-#include "addr_from_stdin.h"
+#include "connect.h"
+//#include "addr_from_stdin.h"
 #include "lwip/err.h"
 #include "lwip/sockets.h"
 #include "lwip/inet.h"
@@ -303,6 +303,7 @@ static void stratum_task(void * pvParameters)
             stratum_method method = parse_stratum_method(line);
 
             if (method == MINING_NOTIFY) {
+                ESP_LOGI(TAG, "diff_change: %d, qstrat: %d, qasic: %d", difficulty_changed, stratum_queue.count, ASIC_jobs_queue.count);
                 if ((difficulty_changed || should_abandon_work(line)) && stratum_queue.count > 0) {
 
                     if (difficulty_changed) {
@@ -384,7 +385,7 @@ void app_main(void)
      * Read "Establishing Wi-Fi or Ethernet Connection" section in
      * examples/protocols/README.md for more information about this function.
      */
-    ESP_ERROR_CHECK(example_connect());
+    ESP_ERROR_CHECK(network_connect());
 
     queue_init(&stratum_queue);
     queue_init(&ASIC_jobs_queue);
