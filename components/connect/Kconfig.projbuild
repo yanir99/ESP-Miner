@@ -277,7 +277,7 @@ menu "Example Connection Configuration"
 
     config EXAMPLE_CONNECT_IPV6
         bool "Obtain IPv6 address"
-        default y
+        default n
         depends on EXAMPLE_CONNECT_WIFI || EXAMPLE_CONNECT_ETHERNET
         select LWIP_IPV6
         help
@@ -287,36 +287,6 @@ menu "Example Connection Configuration"
             the local link address gets assigned.
             Consider enabling IPv6 stateless address autoconfiguration (SLAAC) in the LWIP component.
 
-    if EXAMPLE_CONNECT_IPV6
-        choice EXAMPLE_CONNECT_PREFERRED_IPV6
-            prompt "Preferred IPv6 Type"
-            default EXAMPLE_CONNECT_IPV6_PREF_LOCAL_LINK
-            help
-                Select which kind of IPv6 address the connect logic waits for.
-
-            config EXAMPLE_CONNECT_IPV6_PREF_LOCAL_LINK
-                bool "Local Link Address"
-                help
-                    Blocks until Local link address assigned.
-
-            config EXAMPLE_CONNECT_IPV6_PREF_GLOBAL
-                bool "Global Address"
-                help
-                    Blocks until Global address assigned.
-
-            config EXAMPLE_CONNECT_IPV6_PREF_SITE_LOCAL
-                bool "Site Local Address"
-                help
-                    Blocks until Site link address assigned.
-
-            config EXAMPLE_CONNECT_IPV6_PREF_UNIQUE_LOCAL
-                bool "Unique Local Link Address"
-                help
-                    Blocks until Unique local address assigned.
-
-        endchoice
-
-    endif
 
 
 endmenu
