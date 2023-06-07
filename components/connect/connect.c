@@ -25,7 +25,7 @@
 
 #define NR_OF_IP_ADDRESSES_TO_WAIT_FOR (s_active_interfaces)
 
-#define EXAMPLE_DO_CONNECT CONFIG_EXAMPLE_CONNECT_WIFI || CONFIG_EXAMPLE_CONNECT_ETHERNET
+#define EXAMPLE_DO_CONNECT CONFIG_EXAMPLE_CONNECT_WIFI
 
 #if CONFIG_EXAMPLE_WIFI_SCAN_METHOD_FAST
 #define EXAMPLE_WIFI_SCAN_METHOD WIFI_FAST_SCAN
@@ -66,10 +66,8 @@ static esp_netif_t *s_example_esp_netif = NULL;
 
 static const char *TAG = "connect";
 
-#if CONFIG_EXAMPLE_CONNECT_WIFI
 static esp_netif_t *wifi_start(void);
 static void wifi_stop(void);
-#endif
 
 
 /**
@@ -86,10 +84,10 @@ static bool is_our_netif(const char *prefix, esp_netif_t *netif)
 static void start(void)
 {
 
-#if CONFIG_EXAMPLE_CONNECT_WIFI
+
     s_example_esp_netif = wifi_start();
     s_active_interfaces++;
-#endif
+
 
 
 #if EXAMPLE_DO_CONNECT
@@ -102,10 +100,10 @@ static void start(void)
 /* tear down connection, release resources */
 static void stop(void)
 {
-#if CONFIG_EXAMPLE_CONNECT_WIFI
+
     wifi_stop();
     s_active_interfaces--;
-#endif
+
 
 }
 
@@ -167,7 +165,6 @@ esp_err_t example_disconnect(void)
     return ESP_OK;
 }
 
-#ifdef CONFIG_EXAMPLE_CONNECT_WIFI
 
 static void on_wifi_disconnect(void *arg, esp_event_base_t event_base,
                                int32_t event_id, void *event_data)
@@ -234,7 +231,7 @@ static void wifi_stop(void)
     esp_netif_destroy(wifi_netif);
     s_example_esp_netif = NULL;
 }
-#endif // CONFIG_EXAMPLE_CONNECT_WIFI
+
 
 
 esp_netif_t *get_example_netif(void)
