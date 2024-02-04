@@ -67,11 +67,11 @@ int SERIAL_send(uint8_t *data, int len, bool debug)
 int16_t SERIAL_rx(uint8_t *buf, uint16_t size, uint16_t timeout_ms)
 {
     int16_t bytes_read = uart_read_bytes(UART_NUM_1, buf, size, timeout_ms / portTICK_PERIOD_MS);
-    // if (bytes_read > 0) {
-    //     printf("rx: ");
-    //     prettyHex((unsigned char*) buf, bytes_read);
-    //     printf("\n");
-    // }
+    if (bytes_read > 0) {
+        printf("rx: ");
+        prettyHex((unsigned char*) buf, bytes_read);
+        printf("\n");
+    }
     return bytes_read;
 }
 
