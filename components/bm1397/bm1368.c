@@ -673,16 +673,9 @@ task_result * BM1368_proccess_work(void * pvParameters)
 
     GlobalState * GLOBAL_STATE = (GlobalState *) pvParameters;
 
-    //print the size of the active jobs array
-    ESP_LOGI(TAG, "Active Jobs: %i", sizeof(GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs));
-
     if (GLOBAL_STATE->valid_jobs[rx_job_id] == 0) {
-        if (GLOBAL_STATE->valid_jobs[rx_job_id | 0x80] == 0) {
-            ESP_LOGE(TAG, "Invalid job nonce found, 0x%02X", rx_job_id);
-            return NULL;
-        } else {
-            rx_job_id |= 0x80;
-        }
+        ESP_LOGE(TAG, "Invalid job nonce found, 0x%02X", rx_job_id);
+        return NULL;
     }
 
     uint32_t rolled_version = GLOBAL_STATE->ASIC_TASK_MODULE.active_jobs[rx_job_id]->version;
