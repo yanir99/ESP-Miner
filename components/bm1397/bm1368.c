@@ -607,7 +607,7 @@ void BM1368_send_work(void * pvParameters, bm_job * next_bm_job)
     GlobalState * GLOBAL_STATE = (GlobalState *) pvParameters;
 
     BM1368_job job;
-    id = (id + 8) % 128;
+    id = (id + 24) % 128;
     job.job_id = id;
     job.num_midstates = 0x01;
     memcpy(&job.starting_nonce, &next_bm_job->starting_nonce, 4);
@@ -668,7 +668,7 @@ task_result * BM1368_proccess_work(void * pvParameters)
     }
 
     uint8_t job_id = asic_result->job_id;
-    uint8_t rx_job_id = ((int8_t)job_id & 0xf8) >> 1;
+    uint8_t rx_job_id = ((int8_t)job_id & 0xf0) >> 1;
     ESP_LOGI(TAG, "RX Job ID: %02X", rx_job_id);
 
     GlobalState * GLOBAL_STATE = (GlobalState *) pvParameters;
