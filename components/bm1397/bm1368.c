@@ -346,7 +346,7 @@ static void _send_init(uint64_t frequency) {
 
     do_frequency_ramp_up();
 
-    //BM1368_send_hash_frequency(100);
+    BM1368_send_hash_frequency(frequency);
 
 }
 
