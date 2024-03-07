@@ -61,5 +61,6 @@ void EMC2101_set_fan_speed(float);
 uint16_t EMC2101_get_fan_speed(void);
 void EMC2101_init(void);
 float EMC2101_get_chip_temp(void);
+uint8_t EMC2101_get_internal_temp(void);
 
 #endif /* EMC2101_H_ */

@@ -110,7 +110,7 @@ void DS4432U_read(void) {
     ESP_LOGI(TAG, "DS4432U+ OUT1 = 0x%02X", data[0]);
 }
 
-static void DS4432U_set(uint8_t val) {
+void DS4432U_set(uint8_t val) {
     ESP_LOGI(TAG, "Writing 0x%02X", val);
     ESP_ERROR_CHECK(register_write_byte(DS4432U_OUT0_REG, val));
 }

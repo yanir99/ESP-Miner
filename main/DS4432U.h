@@ -6,6 +6,7 @@
 esp_err_t i2c_master_init(void);
 esp_err_t i2c_master_delete(void);
 void DS4432U_read(void);
+void DS4432U_set(uint8_t);
 
 bool DS4432U_set_vcore(float);
 

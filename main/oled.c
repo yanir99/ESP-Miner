@@ -28,7 +28,7 @@
 
 
 #define I2C_TIMEOUT 1000
-#define OLED_FLIP 1
+#define OLED_FLIP 0
 #define OLED_INVERT 0
 #define I2C_MASTER_NUM              0                          /*!< I2C master i2c port number, the number of i2c peripheral interfaces available will depend on the chip */
 

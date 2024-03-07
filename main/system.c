@@ -23,9 +23,9 @@ void init_system(void) {
     // ledc_init();
     // led_set();
 
-    //Playing with BI level
+    //Setb power enable pin
     gpio_set_direction(GPIO_NUM_10, GPIO_MODE_OUTPUT);
-    gpio_set_level(GPIO_NUM_10, 0);
+    gpio_set_level(GPIO_NUM_10, 1);
 
     //Init I2C
     ESP_ERROR_CHECK(i2c_master_init());
@@ -34,7 +34,8 @@ void init_system(void) {
     ADC_init();
 
     //DS4432U tests
-    DS4432U_set_vcore(1.2);
+    //DS4432U_set_vcore(1.2);
+    DS4432U_set(0);
     
     //Fan Tests
     EMC2101_init();
@@ -48,7 +49,7 @@ void init_system(void) {
     } else {
         ESP_LOGI(TAG, "OLED init success!");
         OLED_clear();
-        OLED_writeString(0, 0, "The bitaxe!");
+        OLED_writeString(0, 0, "The Blockaxe!");
     }
     #endif
 }
@@ -57,7 +58,7 @@ void get_stats(void) {
     char oled_buf[20];
 
     uint16_t fan_speed = EMC2101_get_fan_speed();
-    float chip_temp = EMC2101_get_chip_temp();
+    float chip_temp = EMC2101_get_internal_temp() + 5;
     float current = INA260_read_current();
     float voltage = INA260_read_voltage();
     float power = INA260_read_power();
