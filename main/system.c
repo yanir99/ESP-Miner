@@ -9,6 +9,7 @@
 #include "DS4432U.h"
 #include "EMC2101.h"
 #include "INA260.h"
+#include "TPS546.h"
 #include "adc.h"
 #include "oled.h"
 
@@ -35,7 +36,13 @@ void init_system(void) {
 
     //DS4432U tests
     //DS4432U_set_vcore(1.2);
-    DS4432U_set(0);
+    //DS4432U_set(0);
+    // Initialize the core voltage regulator
+    TPS546_init();
+
+    // turn on ASIC core voltage (three domains in series)
+    ESP_LOGI(TAG, "---TURNING ON VCORE---");
+    TPS546_set_vout(1200);
     
     //Fan Tests
     EMC2101_init();
@@ -49,7 +56,7 @@ void init_system(void) {
     } else {
         ESP_LOGI(TAG, "OLED init success!");
         OLED_clear();
-        OLED_writeString(0, 0, "The Blockaxe!");
+        OLED_writeString(0, 0, "The Bitaxe 402!");
     }
     #endif
 }
@@ -59,10 +66,18 @@ void get_stats(void) {
 
     uint16_t fan_speed = EMC2101_get_fan_speed();
     float chip_temp = EMC2101_get_internal_temp() + 5;
-    float current = INA260_read_current();
-    float voltage = INA260_read_voltage();
-    float power = INA260_read_power();
+    // float current = INA260_read_current();
+    // float voltage = INA260_read_voltage();
+    // float power = INA260_read_power();
+
+    float voltage = TPS546_get_vin() * 1000;
+    float current = TPS546_get_iout() * 1000;
+
+    // calculate regulator power (in milliwatts)
+    float power = (TPS546_get_vout() * current) / 1000;
+
     uint16_t vcore = ADC_get_vcore();
+    uint16_t tpscore = (TPS546_get_vout() * 1000) / 3;
 
     ESP_LOGI(TAG, "Fan Speed: %d RPM", fan_speed);
     ESP_LOGI(TAG, "Chip Temp: %.2f C", chip_temp);
@@ -73,7 +88,8 @@ void get_stats(void) {
     ESP_LOGI(TAG, "Power: %.2f mW", power);
 
     //ESP32 ADC tests
-    ESP_LOGI(TAG, "Vcore: %d mV\n", vcore);
+    ESP_LOGI(TAG, "Vcore: %d mV", vcore);
+    ESP_LOGI(TAG, "TPScore: %d mV\n", tpscore);
 
     if (OLED_status()) {
         memset(oled_buf, 0, 20);
@@ -87,7 +103,7 @@ void get_stats(void) {
         OLED_writeString(0, 2, oled_buf);
 
         memset(oled_buf, 0, 20);
-        snprintf(oled_buf, 20, "Pwr: %.2f mW", power);
+        snprintf(oled_buf, 20, "tpsCore: %u mV", tpscore);
         OLED_clearLine(3);
         OLED_writeString(0, 3, oled_buf);
     }

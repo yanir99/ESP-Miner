@@ -8,6 +8,7 @@ idf_component_register(SRCS
 "DS4432U.c" 
 "EMC2101.c" 
 "INA260.c" 
+"TPS546.c"
 "adc.c" 
 "oled.c" 
 "fonts.c" 
