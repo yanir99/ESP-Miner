@@ -395,15 +395,15 @@ int TPS546_init(void)
  
     /* Read version number and see if it matches */
     TPS546_read_mfr_info(read_mfr_revision);
-    // if (memcmp(read_mfr_revision, MFR_REVISION, 3) != 0) {
-    //     uint8_t voutmode;
-    //     // If it doesn't match, then write all the registers and set new version number
-    //     ESP_LOGI(TAG, "--------------------------------");
-    //     ESP_LOGI(TAG, "Config version mismatch, writing new config values");
-    //     smb_read_byte(PMBUS_VOUT_MODE, &voutmode);
-    //     ESP_LOGI(TAG, "VOUT_MODE: %02x", voutmode);
-    //     TPS546_write_entire_config();
-    // }
+    if (memcmp(read_mfr_revision, MFR_REVISION, 3) != 0) {
+        uint8_t voutmode;
+        // If it doesn't match, then write all the registers and set new version number
+        ESP_LOGI(TAG, "--------------------------------");
+        ESP_LOGI(TAG, "Config version mismatch, writing new config values");
+        smb_read_byte(PMBUS_VOUT_MODE, &voutmode);
+        ESP_LOGI(TAG, "VOUT_MODE: %02x", voutmode);
+        TPS546_write_entire_config();
+    }
 
     /* Show temperature */
     ESP_LOGI(TAG, "--------------------------------");

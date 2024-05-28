@@ -70,26 +70,26 @@ void get_stats(void) {
     // float voltage = INA260_read_voltage();
     // float power = INA260_read_power();
 
-    float voltage = TPS546_get_vin() * 1000;
+    float vin = TPS546_get_vin() * 1000;
     float current = TPS546_get_iout() * 1000;
+    uint16_t tpscore = TPS546_get_vout() * 1000;
 
     // calculate regulator power (in milliwatts)
-    float power = (TPS546_get_vout() * current) / 1000;
+    float power = (tpscore * current) / 1000;
 
-    uint16_t vcore = ADC_get_vcore();
-    uint16_t tpscore = (TPS546_get_vout() * 1000) / 3;
+    uint16_t adccore = ADC_get_vcore();
 
     ESP_LOGI(TAG, "Fan Speed: %d RPM", fan_speed);
     ESP_LOGI(TAG, "Chip Temp: %.2f C", chip_temp);
 
     //Current Sensor tests
     ESP_LOGI(TAG, "Current: %.2f mA", current);
-    ESP_LOGI(TAG, "Voltage: %.2f mV", voltage);
+    ESP_LOGI(TAG, "VIN: %.2f mV", vin);
     ESP_LOGI(TAG, "Power: %.2f mW", power);
 
     //ESP32 ADC tests
-    ESP_LOGI(TAG, "Vcore: %d mV", vcore);
-    ESP_LOGI(TAG, "TPScore: %d mV\n", tpscore);
+    ESP_LOGI(TAG, "ADCVcore: %d mV", adccore);
+    ESP_LOGI(TAG, "TPSVcore: %d mV\n", tpscore);
 
     if (OLED_status()) {
         memset(oled_buf, 0, 20);
