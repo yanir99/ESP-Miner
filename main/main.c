@@ -44,6 +44,9 @@ void app_main(void)
     } else if (strcmp(GLOBAL_STATE.device_model_str, "supra") == 0) {
         ESP_LOGI(TAG, "DEVICE: Supra");
         GLOBAL_STATE.device_model = DEVICE_SUPRA;
+    } else if (strcmp(GLOBAL_STATE.device_model_str, "hex") == 0) {
+        ESP_LOGI(TAG, "DEVICE: Hex");
+        GLOBAL_STATE.device_model = DEVICE_HEX;
     } else {
         ESP_LOGE(TAG, "Invalid DEVICE model");
         // maybe should return here to now execute anything with a faulty device parameter !
